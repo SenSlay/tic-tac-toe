@@ -13,6 +13,15 @@ function Gameboard() {
     // Getter function to retrieve the board through closure
     const getBoard = () => board;
 
+    // Adds player's token to the board
+    const addMove = (x, y, player) => {
+        const box = board[x][y];
+
+        if (box.getValue() == 0) {
+            box.addToken(player);
+        }
+    };
+
     // Prints board to console
     const printBoard = () => {
         const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
@@ -20,6 +29,7 @@ function Gameboard() {
     };
 
     return {
+        addMove,
         getBoard, 
         printBoard
     };
@@ -47,4 +57,4 @@ function Cell() {
       addToken,
       getValue
     };
-  }
+}
