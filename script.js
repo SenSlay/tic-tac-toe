@@ -13,16 +13,19 @@ function gameboard() {
     // Getter function to retrieve the board through closure
     const getBoard = () => board;
 
-    // Adds player's token to the board
+    // Add player's token to the board
     const addMove = (x, y, player) => {
         const box = board[x][y];
 
         if (box.getValue() == 0) {
             box.addToken(player);
+            return 1;
         }
+        
+        return;
     };
 
-    // Prints board to console
+    // Print board to console
     const printBoard = () => {
         const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
         console.log(boardWithCellValues);
@@ -58,6 +61,35 @@ function cell() {
     };
 }
 
+// Check if there is a winner or a tie
+function checkGameState(board) {
+    let emptyBoxCount = 0;
+
+    for (let i = 0; i < 3; i++) {
+        // Updates counter for available boxes left
+        for (let j = 0; j < 3; j++) {
+            emptyBoxCount += board[i][j].getValue() === 0 ? 1 : 0;
+        }
+
+        // Check rows
+        if (checkLine(board[i][0].getValue(), board[i][1].getValue(), board[i][2].getValue())) return board[i][0].getValue();
+        // Check columns
+        if (checkLine(board[0][i].getValue(), board[1][i].getValue(), board[2][i].getValue())) return board[i][0].getValue();
+    }
+
+    // Check diagonals
+    if (checkLine(board[0][0].getValue(), board[1][1].getValue(), board[2][2].getValue())) return board[0][0].getValue();
+    if (checkLine(board[0][2].getValue(), board[1][1].getValue(), board[2][0].getValue())) return board[0][2].getValue();
+
+    // Check for available boxes
+    if (emptyBoxCount === 0) return 3;
+}
+
+// Check if a line of tokens are matching
+function checkLine(a, b, c) {
+    return a !== 0 && a === b && b === c;
+}
+
 // The gameController controls flow of the game
 function gameController(playerOneName = "Player One", playerTwoName = "Player Two") {
     const board = gameboard();
@@ -82,10 +114,22 @@ function gameController(playerOneName = "Player One", playerTwoName = "Player Tw
     };
 
     const playRound = (x, y) => {
+        // Check if selected box is available
+        if (!board.addMove(x, y, getActivePlayer().token)) {
+            console.log("Cannot choose that box");
+            return;
+        }
+
         // Check for a winner or tie
-
-        board.addMove(x, y, getActivePlayer().token);
-
+        const gameState = checkGameState(board.getBoard()); 
+    
+        if (gameState === 1 || gameState === 2) {
+            console.log(`${players[gameState - 1].name} has won!`);
+        }
+        else if (gameState === 3) {
+            console.log("Tie!");
+        }
+        
         switchPlayerTurn();
         board.printBoard();
     }
