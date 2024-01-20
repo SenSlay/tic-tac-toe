@@ -1,4 +1,4 @@
-// The Gameboard represents the state of the game
+// The gameboard represents the state of the game
 function gameboard() {
     const board = [];
 
@@ -36,7 +36,7 @@ function gameboard() {
 }
 
 /*
-A Cell represents a box in the game board and can have one of three values:
+A cell represents a box in the game board and can have one of three values:
 0: Box is empty
 1: Player 1's token
 2: Player 2's token
@@ -57,3 +57,45 @@ function cell() {
       getValue
     };
 }
+
+// The gameController controls flow of the game
+function gameController(playerOneName = "Player One", playerTwoName = "Player Two") {
+    const board = gameboard();
+
+    const players = [
+        {
+            name: playerOneName,
+            token: 1
+        },
+        {
+            name: playerTwoName,
+            token: 2
+        }
+    ];
+
+    let activePlayer = players[0];
+
+    const getActivePlayer = () => activePlayer;
+
+    const switchPlayerTurn = () => {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+
+    const playRound = (x, y) => {
+        // Check for a winner or tie
+
+        board.addMove(x, y, getActivePlayer().token);
+
+        switchPlayerTurn();
+        board.printBoard();
+    }
+
+    board.printBoard();
+    
+    return {
+        playRound,
+        getActivePlayer,
+    };
+}
+
+const game = gameController();
