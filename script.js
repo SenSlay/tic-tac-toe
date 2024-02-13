@@ -140,8 +140,42 @@ const game = (() => {
         return {
             playRound,
             getActivePlayer,
+            getBoard: board.getBoard
         };
     }
     
     return gameController();
 })();
+
+function displayController() {
+    const boardContainer = document.querySelector(".game-board");
+
+    const updateDisplay = () => {
+        // Clear Board
+        boardContainer.textContent = "";
+
+        const board = game.getBoard();
+
+        let idCounter = 0;
+        // Iterate through each item in board array and display cell
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+
+                cellButton.textContent = `${cell.getValue()}`;
+
+                // Assign cell ID and data attributes
+                cellButton.id = `cell-${idCounter++}`
+                cellButton.dataset.row = rowIndex;
+                cellButton.dataset.col = colIndex;
+
+                boardContainer.appendChild(cellButton);
+            })
+        });
+
+    }
+
+    return updateBoard();
+}
+
