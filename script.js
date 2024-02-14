@@ -18,12 +18,13 @@ const game = (() => {
         const addMove = (x, y, player) => {
             const box = board[x][y];
     
+            // Check if box is empty
             if (box.getValue() == 0) {
                 box.addToken(player);
-                return 1;
+                return true;
             }
             
-            return;
+            return false;
         };
     
         // Print board to console
@@ -156,6 +157,7 @@ function displayController() {
 
         const board = game.getBoard();
 
+        // ID counter for unique ID per cell
         let idCounter = 0;
         // Iterate through each item in board array and display cell
         board.forEach((row, rowIndex) => {
@@ -165,6 +167,16 @@ function displayController() {
 
                 cellButton.textContent = `${cell.getValue()}`;
 
+                if (cell.getValue() === 1) {
+                    cellButton.innerHTML = `<i class="fa-solid fa-x"></i>`;
+                }
+                else if (cell.getValue() === 2) {
+                    cellButton.innerHTML = `<i class="fa-solid fa-o"></i>`;
+                }
+                else {
+                    cellButton.textContent = "";
+                }
+
                 // Assign cell ID and data attributes
                 cellButton.id = `cell-${idCounter++}`
                 cellButton.dataset.row = rowIndex;
@@ -173,9 +185,20 @@ function displayController() {
                 boardContainer.appendChild(cellButton);
             })
         });
-
     }
 
-    return updateBoard();
+    // Add click handler for the board's event listener
+    function cellClickHandler(e) {
+        const x = e.target.dataset.row;
+        const y = e.target.dataset.col;
+
+        game.playRound(x, y);
+        updateDisplay();
+    }
+    boardContainer.addEventListener("click", cellClickHandler);
+
+    return updateDisplay();
 }
+
+displayController();
 
