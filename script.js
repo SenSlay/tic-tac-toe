@@ -99,21 +99,33 @@ const game = (() => {
         const players = [
             {
                 name: playerOneName,
-                token: 1
+                token: 1,
+                score: 0
             },
             {
                 name: playerTwoName,
-                token: 2
+                token: 2,
+                score: 0
             }
         ];
     
         let activePlayer = players[0];
     
+        // Get current active player
         const getActivePlayer = () => activePlayer;
     
+        // Switch player turn
         const switchPlayerTurn = () => {
             activePlayer = activePlayer === players[0] ? players[1] : players[0];
         };
+
+        // Add player score
+        const addPlayerScore = (player) => {
+            players[player].score++;
+        };
+
+        // Get players' scores
+        const getPlayersScores = () => [players[0].score, players[1].score];
     
         const playRound = (x, y) => {
             // Check if selected box is available
@@ -124,9 +136,12 @@ const game = (() => {
     
             // Check for a winner or tie
             const gameState = checkGameState(board.getBoard()); 
-        
+            
+            // gameState = 1 - Player one won
+            // gameState = 2 - Player two won
             if (gameState === 1 || gameState === 2) {
                 console.log(`${players[gameState - 1].name} has won!`);
+                addPlayerScore(gameState - 1);
             }
             else if (gameState === 3) {
                 console.log("Tie!");
@@ -141,7 +156,8 @@ const game = (() => {
         return {
             playRound,
             getActivePlayer,
-            getBoard: board.getBoard
+            getBoard: board.getBoard,
+            getPlayersScores
         };
     }
     
@@ -189,6 +205,23 @@ function displayController() {
 
                 boardContainer.appendChild(cellButton);
             })
+        });
+
+        // Display players' scores
+        const playerOneScore = game.getPlayersScores()[0];
+        const playerTwoScore = game.getPlayersScores()[1];
+
+        const playerOneScoreContainers = document.querySelectorAll(".player-one-score");
+        const playerTwoScoreContainers = document.querySelectorAll(".player-two-score");
+
+        // Display player one's score
+        playerOneScoreContainers.forEach(container => {
+            container.textContent = playerOneScore;
+        });
+
+        // Display player two's score
+        playerTwoScoreContainers.forEach(container => {
+            container.textContent = playerTwoScore;
         });
     }
 
