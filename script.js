@@ -15,11 +15,11 @@ const game = (() => {
         const getBoard = () => board;
     
         // Add player's token to the board
-        const addMove = (x, y, player) => {
+        const addMove = (x, y, player, gameState) => {
             const box = board[x][y];
     
             // Check if box is empty
-            if (box.getValue() == 0) {
+            if (gameState === 0) {
                 box.addToken(player);
                 return true;
             }
@@ -63,7 +63,11 @@ const game = (() => {
         };
     }
     
-    // Check if there is a winner or a tie
+    // Check if there is a winner or a tie             
+    // gameState = 1 - Player one won
+    // gameState = 2 - Player two won
+    // gameState = 3 - Tie
+    // gameState = 0 - Game is ongoing
     function checkGameState(board) {
         let emptyBoxCount = 0;
     
@@ -85,6 +89,9 @@ const game = (() => {
     
         // Check for available boxes
         if (emptyBoxCount === 0) return 3;
+
+        // Game continues
+        return 0;
     }
     
     // Check if a line of tokens are matching
@@ -128,17 +135,13 @@ const game = (() => {
         const getPlayersScores = () => [players[0].score, players[1].score];
     
         const playRound = (x, y) => {
-            // Check if selected box is available
-            if (!board.addMove(x, y, getActivePlayer().token)) {
-                console.log("Cannot choose that box");
-                return;
-            }
-    
             // Check for a winner or tie
             const gameState = checkGameState(board.getBoard()); 
             
-            // gameState = 1 - Player one won
-            // gameState = 2 - Player two won
+            // Check if a player move is valid
+            if (!board.addMove(x, y, getActivePlayer().token, gameState)) return;
+
+            // Check for a tie or winner
             if (gameState === 1 || gameState === 2) {
                 console.log(`${players[gameState - 1].name} has won!`);
                 addPlayerScore(gameState - 1);
