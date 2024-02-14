@@ -150,12 +150,17 @@ const game = (() => {
 
 function displayController() {
     const boardContainer = document.querySelector(".game-board");
+    const playerTurnContainer = document.querySelector(".player-turn");
 
     const updateDisplay = () => {
         // Clear Board
         boardContainer.textContent = "";
 
         const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        // Display player's turn
+        playerTurnContainer.textContent = `${activePlayer.name}'s turn...`;
 
         // ID counter for unique ID per cell
         let idCounter = 0;
