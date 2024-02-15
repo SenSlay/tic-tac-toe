@@ -21,6 +21,22 @@ body {
     text-align: center;
     font-size: 35px;
     font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.btn-container {
+    gap: 15px;
+}
+
+.reset-btn, .change-start-btn {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.player-two-start {
+    background-color: #6c757d;;
+    color: white;
 }
 
 .fa-user {
@@ -37,6 +53,7 @@ body {
     grid-template-rows: repeat(3, 1fr);
     height: 400px!important;
     width: 400px!important;
+    margin-bottom: 20px;
 }
 
 .cell {

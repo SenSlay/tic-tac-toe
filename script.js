@@ -287,14 +287,48 @@ function displayController() {
     function resetGame() {
         game.reset();
 
-        // If active player is player two, switch player turn
-        if (game.getActivePlayer().token === 2) {
+        const starter = document.querySelector(".change-start-btn").dataset.start;
+        
+        // Check active player with starting player and switch accordingly
+        if (starter == 2 && game.getActivePlayer().token === 1) {
+            game.switchPlayerTurn();
+        }
+        else if (starter == 1 && game.getActivePlayer().token === 2) {
             game.switchPlayerTurn();
         }
 
         updateDisplay();
     }
     document.querySelector(".reset-btn").onclick = resetGame;
+
+    const btn = document.querySelector(".change-start-btn");
+
+    // Change starting player
+    function changePlayerStart() {
+
+        // If player one starts, change to player two
+        if (btn.dataset.start == 1) {
+            btn.dataset.start = 2;
+            btn.classList.add("player-two-start");
+            btn.textContent = "Player Two Starts"
+
+            if (game.getActivePlayer().token === 1) {
+                game.switchPlayerTurn();
+            }
+        }
+        else {
+            btn.dataset.start = 1;
+            btn.classList.remove("player-two-start");
+            btn.textContent = "Player One Starts"
+
+            if (game.getActivePlayer() == "players[1]") {
+                game.switchPlayerTurn();
+            }
+        }
+
+        resetGame();
+    }
+    btn.onclick = changePlayerStart;
 
     return updateDisplay();
 }
