@@ -30,7 +30,6 @@ const game = (() => {
         // Print board to console
         const printBoard = () => {
             const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
-            console.log(boardWithCellValues);
         };
 
         // Reset the board
@@ -116,18 +115,18 @@ const game = (() => {
     }
     
     // The gameController controls flow of the game
-    function gameController(playerOneName = "Player One", playerTwoName = "Player Two") {
+    function gameController() {
         const board = gameboard();
         let status = 0;
     
         const players = [
             {
-                name: playerOneName,
+                name: "Player One",
                 token: 1,
                 score: 0
             },
             {
-                name: playerTwoName,
+                name: "Player Two",
                 token: 2,
                 score: 0
             }
@@ -153,6 +152,11 @@ const game = (() => {
 
         // Get players' scores
         const getPlayersScores = () => [players[0].score, players[1].score];
+
+        // Change player name
+        const changePlayerName = (player, newName) => {
+            players[player].name = newName;
+        }
     
         const playRound = (x, y) => {
             let gameState = checkGameState(board.getBoard()); 
@@ -169,13 +173,11 @@ const game = (() => {
             if (status == 0) {
                 // Check for a tie or winner
                 if (gameState === 1 || gameState === 2) {
-                    console.log(`${players[gameState - 1].name} has won!`);
                     addPlayerScore(gameState - 1);
                     status = 1;
                     statusContainer.textContent = `${players[gameState - 1].name} Won!`
                 }
                 else if (gameState === 3) {
-                    console.log("Tie!");
                     status = 1;
                     statusContainer.textContent = "Tie!";
                 }
@@ -199,8 +201,9 @@ const game = (() => {
             getActivePlayer,
             switchPlayerTurn,
             getBoard: board.getBoard,
-            getPlayersScores,
             getGameStatus,
+            getPlayersScores,
+            changePlayerName,
             reset
         };
     }
@@ -329,6 +332,19 @@ function displayController() {
         resetGame();
     }
     btn.onclick = changePlayerStart;
+
+    const playerNameInputs = document.querySelectorAll(".player-name-input");
+
+    // Change player name per input
+    playerNameInputs.forEach((player) => {
+        player.addEventListener("input", () => {
+            game.changePlayerName(parseInt(player.id), player.value)
+
+            updateDisplay();
+        });
+    });
+
+
 
     return updateDisplay();
 }
