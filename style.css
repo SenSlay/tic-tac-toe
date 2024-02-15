@@ -10,7 +10,6 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    padding-top: 10%;
     background-color: #E3E2DF!important;
     box-sizing: border-box;
 }
@@ -37,6 +36,10 @@ body {
 .player-two-start {
     background-color: #6c757d;;
     color: white;
+}
+
+.score-container {
+    gap: 15px;
 }
 
 .fa-user {

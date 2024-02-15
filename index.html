@@ -9,13 +9,13 @@
 
 </head>
 <body>
-    <main class="container-fluid">
+    <main class="container-fluid mt-md-5 pt-md-5">
         <p class="row status"></p>
 
         <div class="row justify-content-center">
             <div class="col d-none d-md-flex">
                 <div class="ms-auto d-flex flex-column justify-content-center align-items-center text-center p-3">
-                    <h3 class="mb-3">Player One</h3>
+                    <h3 class="mb-3 border">Player One</h3>
                     <i class="fa-regular fa-user mb-5"></i>
                     <h3 class="player-one-score">0</h3>
                 </div>
@@ -37,6 +37,25 @@
         <div class="d-flex justify-content-center align-items-center btn-container">
             <button type="button" class="reset-btn">Reset</button>
             <button type="button" class="change-start-btn" data-start="1">Player One Starts</button>
+        </div>
+
+        <!-- Appears on smaller devices and disappears on larger devices-->
+        <div class="row d-md-none score-container">
+            <div class="col d-flex justify-content-center">
+                <div class="ms-auto d-flex flex-column justify-content-center align-items-center text-center p-3">
+                    <h3 class="mb-3">Player One</h3>
+                    <i class="fa-regular fa-user mb-5"></i>
+                    <h3 class="player-one-score">0</h3>
+                </div>
+            </div>
+
+            <div class="col d-flex justify-content-center">
+                <div class="d-flex me-auto flex-column justify-content-center align-items-center text-center p-3">
+                    <h3 class="mb-3">Player Two</h3>
+                    <i class="fa-regular fa-user mb-5"></i>
+                    <h3 class="player-two-score">0</h3>
+                </div>
+            </div>
         </div>
     </main>
 
