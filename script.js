@@ -7,7 +7,7 @@ const game = (() => {
         for (let i = 0; i < 3; i++) {
             board[i] = []
             for (let j = 0; j < 3; j++) {
-                board[i].push(cell());
+                board[i].push(new cell());
             }
         }
     
@@ -16,11 +16,11 @@ const game = (() => {
     
         // Add player's token to the board
         const addMove = (x, y, player, gameState) => {
-            const cell = board[x][y];
+            const selectedCell = board[x][y];
     
             // Check if cell is empty or game is ongoing
-            if (cell.getValue() === 0 & gameState === 0) {
-                cell.addToken(player);
+            if (selectedCell.getValue() === 0 & gameState === 0) {
+                selectedCell.addToken(player);
                 return true;
             }
             
@@ -30,6 +30,7 @@ const game = (() => {
         // Print board to console
         const printBoard = () => {
             const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
+            console.log(boardWithCellValues);
         };
 
         // Reset the board
@@ -48,34 +49,53 @@ const game = (() => {
             resetBoard
         };
     }
-    
+
     /*
     A cell represents a box in the game board and can have one of three values:
     0: Box is empty
     1: Player 1's token
     2: Player 2's token
     */
-    function cell() {
-        let value = 0;
+
+    // ***CELL FACTORY FUNCTION IMPLEMENTATION***
+    // function cell() {
+    //     let value = 0;
       
-        // Accept a player's token to change the value of the cell
-        const addToken = (player) => {
-          value = player;
-        };
+    //     // Accept a player's token to change the value of the cell
+    //     const addToken = (player) => {
+    //       value = player;
+    //     };
       
-        // Retrieve the current value of this cell through closure
-        const getValue = () => value;
+    //     // Retrieve the current value of this cell through closure
+    //     const getValue = () => value;
       
-        // Clear the cell of tokens by setting value to 0
-        const clearCell = () => {
-            value = 0;
+    //     // Clear the cell of tokens by setting value to 0
+    //     const clearCell = () => {
+    //         value = 0;
+    //     }
+
+    //     return {
+    //       addToken,
+    //       getValue,
+    //       clearCell
+    //     };
+    // }
+
+    // ***CELL CLASS IMPLEMENTATION***
+    class cell {
+        #value = 0;
+
+        addToken(player) {
+            this.#value = player;
         }
 
-        return {
-          addToken,
-          getValue,
-          clearCell
-        };
+        getValue() {
+            return this.#value;
+        }
+
+        clearCell() {
+            this.#value = 0;
+        }
     }
     
     // Check if there is a winner or a tie             
