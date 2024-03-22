@@ -362,7 +362,7 @@ const game = (() => {
     return new gameController();
 })();
 
-function displayController() {
+(function displayController() {
     const boardContainer = document.querySelector(".game-board");
     const statusContainer = document.querySelector(".status");
 
@@ -501,6 +501,4 @@ function displayController() {
 
 
     return updateDisplay();
-}
-
-displayController();
+})();
